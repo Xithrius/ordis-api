@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException, status
 from httpx import AsyncClient
 from sqlalchemy import func, or_, select
@@ -10,10 +12,20 @@ from api.routers.schemas.warframe_items import ItemsSyncResponse, WarframeItemRe
 router = APIRouter()
 
 warframe_market_api = AsyncClient(
-    base_url="https://api.warframe.market/v1/",
+    base_url="https://api.warframe.market/v1",
     headers={"Language": "en"},
     timeout=15.0,
 )
+
+
+async def get_all_warframe_items() -> list[Any]:
+    r = await warframe_market_api.get("/items")
+
+    data = r.json()
+
+    items = data["payload"]["items"]
+
+    return items
 
 
 @router.get(
@@ -25,11 +37,7 @@ warframe_market_api = AsyncClient(
 async def sync_items(
     session: DBSession,
 ) -> ItemsSyncResponse:
-    r = await warframe_market_api.get("/items")
-
-    data = r.json()
-
-    items = data["payload"]["items"]
+    items = await get_all_warframe_items()
 
     result = await session.execute(
         insert(WarframeItemModel).on_conflict_do_nothing(index_elements=["id"]).returning(WarframeItemModel),

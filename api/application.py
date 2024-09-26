@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
 
+from api.lifetime import PrometheusMiddleware, lifespan, metrics
 from api.routers import api_router
-from api.routers.lifetime import PrometheusMiddleware, lifespan, metrics
 from api.settings import settings
 
 

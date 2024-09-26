@@ -13,9 +13,9 @@ from sqlalchemy.ext.asyncio import (
 )
 from testcontainers.postgres import PostgresContainer
 
+from api.application import get_app
 from api.database.dependencies import get_db_session
 from api.database.utils import create_database, drop_database
-from api.routers.application import get_app
 
 
 @pytest.fixture(scope="session")

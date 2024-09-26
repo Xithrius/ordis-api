@@ -29,7 +29,7 @@ def main() -> None:
         logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 
         uvicorn.run(
-            "api.routers.application:get_app",
+            "api.application:get_app",
             workers=settings.workers_count,
             host=settings.host,
             port=settings.port,
@@ -39,7 +39,7 @@ def main() -> None:
         )
     else:
         GunicornApplication(
-            "api.routers.application:get_app",
+            "api.application:get_app",
             host=settings.host,
             port=settings.port,
             workers=settings.workers_count,
