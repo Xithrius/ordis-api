@@ -19,16 +19,6 @@ from api.database.utils import create_database, drop_database
 
 
 @pytest.fixture(scope="session")
-def anyio_backend() -> str:
-    """
-    Backend for anyio pytest plugin.
-
-    :return: backend name.
-    """
-    return "asyncio"
-
-
-@pytest.fixture(scope="session")
 async def _engine() -> AsyncGenerator[AsyncEngine, None]:  # pyright: ignore[reportUnusedFunction]
     """
     Create engine and databases.

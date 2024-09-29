@@ -29,6 +29,7 @@ async def create_database(url: str | URL | None = None) -> None:
                 f'CREATE DATABASE "{settings.db_base}" ENCODING "utf8" TEMPLATE template1',
             ),
         )
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_trgm"))
 
 
 async def drop_database(url: str | URL | None = None) -> None:
