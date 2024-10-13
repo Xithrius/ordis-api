@@ -1,0 +1,3 @@
+- [x] Construct database table for orders
+- [ ] Users should be able to track order status via specific ID
+- [ ] Notifications when an item hits a certain price

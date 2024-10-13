@@ -30,7 +30,7 @@ async def _engine() -> AsyncGenerator[AsyncEngine, None]:  # pyright: ignore[rep
 
     load_all_models()
 
-    postgres = PostgresContainer("postgres:15-alpine", driver="psycopg")
+    postgres = PostgresContainer("postgres:16-alpine", driver="psycopg")
     _ = postgres.start()
 
     url = postgres.get_connection_url()

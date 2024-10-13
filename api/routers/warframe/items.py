@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import insert
 
 from api.database.dependencies import DBSession
 from api.database.models.warframe.items import WarframeItemModel
-from api.routers.schemas.warframe_items import ItemsSyncResponse, WarframeItemResponse
+from api.routers.schemas.items import ItemsSyncResponse, WarframeItemResponse
 
 router = APIRouter()
 
@@ -43,6 +43,7 @@ async def sync_items(
         insert(WarframeItemModel).on_conflict_do_nothing(index_elements=["id"]).returning(WarframeItemModel),
         items,
     )
+    result.unique()
 
     rows = result.all()
 
@@ -63,6 +64,7 @@ async def get_all_items(
     stmt = select(WarframeItemModel).limit(limit).offset(offset)
 
     items = await session.execute(stmt)
+    items.unique()
 
     return list(items.scalars().fetchall())
 
@@ -86,6 +88,7 @@ async def get_item_by_fuzzy(
     )
 
     items = await session.execute(stmt)
+    items.unique()
 
     if (item := items.scalar_one_or_none()) is None:
         raise HTTPException(
@@ -109,6 +112,7 @@ async def get_item(
     stmt = select(WarframeItemModel).where(WarframeItemModel.id == item_id)
 
     items = await session.execute(stmt)
+    items.unique()
 
     if (item := items.scalar_one_or_none()) is None:
         raise HTTPException(
