@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from api.database.crud.tracking import order_dao
+from api.database.crud.tracking import order_tracking_dao
 from api.database.dependencies import DBSession
 from api.database.models.warframe.tracking import WarframeMarketOrderModel
 from api.routers.schemas.tracking import Order, OrderCreate
@@ -24,7 +24,7 @@ async def create_order_tracker(
             "Notification of multiple users is currently not supported",
         )
 
-    return await order_dao.create(session, obj_in=track_new_order)
+    return await order_tracking_dao.create(session, obj=track_new_order)
 
 
 # @router.get(
